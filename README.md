@@ -1,9 +1,9 @@
 <p align="center"><img src="docs/readme-header.png" alt="frickoss — Only on macOS; every format fre:ac speaks, in a native Mac window" width="100%"></p>
 
 <p align="center">
-  <a href="#build-it-on-your-mac"><img src="docs/badge-release.svg" alt="Release v1.0.0"></a>
-  <a href="#build-it-on-your-mac"><img src="docs/badge-download.svg" alt="Build on your Mac"></a>
-  <a href="#requirements"><img src="docs/badge-platform.svg" alt="Platform: macOS 13 or later"></a>
+  <a href="https://github.com/dustalexw/frickoss/releases/tag/v1.0.0"><img src="docs/badge-release.svg" alt="Release v1.0.0"></a>
+  <a href="https://github.com/dustalexw/frickoss/releases/download/v1.0.0/frickoss-1.0.0-macOS-arm64.zip"><img src="docs/badge-download.svg" alt="Download the macOS app"></a>
+  <a href="#requirements"><img src="docs/badge-platform.svg" alt="Platform: macOS 13 or later, Apple silicon"></a>
 </p>
 
 # frickoss
@@ -29,6 +29,16 @@ Add files or a disc → Choose a format → Pick where it goes → Convert
 
 Choose **frickoss → About frickoss** for the version, your fre:ac version and encoder count, a
 feature overview and links to fre:ac.
+
+## Download the macOS app
+
+Download **frickoss-1.0.0-macOS-arm64.zip** from the [1.0.0 release](https://github.com/dustalexw/frickoss/releases/tag/v1.0.0), unzip it and move
+**frickoss.app** to Applications. It runs on Apple-silicon Macs with macOS 13 or later; on an Intel Mac,
+[build it yourself](#build-it-on-your-mac).
+
+The app isn't notarized by Apple, so the first time you open it macOS will refuse. Open **System Settings →
+Privacy & Security**, scroll down and click **Open Anyway** next to frickoss (or right-click the app and
+choose **Open**). After that it opens normally.
 
 ## Requirements
 

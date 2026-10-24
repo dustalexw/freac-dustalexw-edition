@@ -8,8 +8,8 @@ Outputs
     docs/AppIcon-1024.png          app icon source
     docs/readme-header.png         2560x760 README header
     docs/badge-release.svg         RELEASE  | V1.0.0
-    docs/badge-download.svg        BUILD    | ON YOUR MAC
-    docs/badge-platform.svg        PLATFORM | MACOS 13+
+    docs/badge-download.svg        DOWNLOAD | MACOS APP
+    docs/badge-platform.svg        PLATFORM | MACOS 13+ · APPLE SILICON
 
 Layout and badge format follow the other dustalexw apps (Cover Flow, Data Curator, Banana Split Redux,
 Plexamp Download Copier); colours are this app's own: graphite, a "record light" coral and a sky-blue waveform.
@@ -236,8 +236,8 @@ def main():
     icon.save(os.path.join(ROOT, "AppIcon.icns"), sizes=[(16, 16), (32, 32), (64, 64), (128, 128), (256, 256), (512, 512), (1024, 1024)])
     header(os.path.join(ROOT, "docs/readme-header.png"), v)
     badge(os.path.join(ROOT, "docs/badge-release.svg"), "Release", f"v{v}", "#ff5a4e", "#20222c")
-    badge(os.path.join(ROOT, "docs/badge-download.svg"), "Build", "on your Mac", "#f5f1ea", "#20242e")
-    badge(os.path.join(ROOT, "docs/badge-platform.svg"), "Platform", "macOS 13+", "#5cc8ff", "#20222c")
+    badge(os.path.join(ROOT, "docs/badge-download.svg"), "Download", "macOS app", "#f5f1ea", "#20242e")
+    badge(os.path.join(ROOT, "docs/badge-platform.svg"), "Platform", "macOS 13+ · Apple silicon", "#5cc8ff", "#20222c")
     print(f"Wrote icon, header and badges for {v}")
 
 
