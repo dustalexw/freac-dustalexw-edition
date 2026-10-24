@@ -1,0 +1,9 @@
+fre:ac - free audio converter v1.1.7 (arm64) command line interface
+Copyright
+
+Available CD drives:
+
+	Number	Device path	Designation
+	------------------------------------------------
+	0	/dev/disk4		MATSHITA DVD-R UJ-8A8
+

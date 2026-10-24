@@ -1,0 +1,16 @@
+fre:ac - free audio converter v1.1.7 (arm64) command line interface
+Copyright (C) 2001-2023 Robert Kausch
+
+Options for LAME MP3 Encoder:
+
+	--resample	Resample to 44.1 kHz
+	-m <val>	Stereo mode: auto, default
+			             s (Stereo)
+			             j (Joint Stereo)
+			             m (Mono)
+
+	-b <val>	Bitrate: 8 (8 kbps) - 320 (320 kbps), default 192
+	-q <val>	Quality: 0 (Best - slowest) - 9 (Worst), default 3
+	--preset=<val>	Preset: standard
+			        extreme
+			        insane

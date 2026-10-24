@@ -1,0 +1,13 @@
+fre:ac - free audio converter v1.1.7 (arm64) command line interface
+Copyright (C) 2001-2023 Robert Kausch
+
+Usage:	freaccmd [options] [--] [encoder options] [file(s)]
+
+  --quiet			Do not print any messages
+
+Use -- to separate freaccmd options from encoder options if both have the same name.
+
+Encoder <id> can be one of:
+
+	coreaudio, faac, fdkaac, flac, lame, mac, meh, opus, sndfile-aiff,
+	sndfile-wave, speex, tta, vorbis, wavpack, wma

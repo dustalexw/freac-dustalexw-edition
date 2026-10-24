@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="181" height="34" viewBox="0 0 181 34" role="img" aria-label="BUILD: ON YOUR MAC">
+  <title>BUILD: ON YOUR MAC</title>
+  <rect width="65" height="34" fill="#20222c"/>
+  <rect x="65" width="116" height="34" fill="#f5f1ea"/>
+  <g font-family="Arial" font-size="11" font-weight="bold" letter-spacing="1.2" text-anchor="middle">
+    <text x="32.5" y="21" fill="#faf4e4">BUILD</text>
+    <text x="123.0" y="21" fill="#20242e">ON YOUR MAC</text>
+  </g>
+</svg>
