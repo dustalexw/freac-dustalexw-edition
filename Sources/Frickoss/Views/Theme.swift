@@ -233,7 +233,7 @@ struct Chip: View {
     }
 }
 
-/// Brand mark: the app icon and "freac" — "fre" in cream, "ac" in coral, as in the README header.
+/// Brand mark: the app icon and "frickoss" — "frick" in cream, "oss" in coral, as in the README header.
 struct BrandMark: View {
     var size: CGFloat = 19
     var body: some View {
@@ -242,9 +242,9 @@ struct BrandMark: View {
                 .resizable()
                 .interpolation(.high)
                 .frame(width: size * 1.9, height: size * 1.9)
-            (Text("fre").foregroundColor(Theme.cream) + Text("ac").foregroundColor(Theme.coral))
+            (Text("frick").foregroundColor(Theme.cream) + Text("oss").foregroundColor(Theme.coral))
                 .font(.system(size: size, weight: .heavy, design: .rounded))
-            Text("dustalexw edition")
+            Text("powered by fre:ac")
                 .font(.system(size: 10.5, weight: .bold))
                 .tracking(0.6)
                 .foregroundStyle(Theme.sky)
@@ -275,7 +275,7 @@ struct WindowChrome: NSViewRepresentable {
         window.titlebarAppearsTransparent = true
         window.styleMask.insert(.fullSizeContentView)
         if window.toolbar == nil {
-            let toolbar = NSToolbar(identifier: "freac-edition.chrome")
+            let toolbar = NSToolbar(identifier: "frickoss.chrome")
             toolbar.showsBaselineSeparator = false
             window.toolbar = toolbar
         }

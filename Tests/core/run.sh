@@ -4,5 +4,5 @@
 set -e
 cd "$(dirname "$0")/../.."
 mkdir -p .lt
-swiftc -swift-version 5 -o .lt/coretests Sources/FreacEdition/Core/*.swift Tests/core/main.swift
+swiftc -swift-version 5 -o .lt/coretests Sources/Frickoss/Core/*.swift Tests/core/main.swift
 .lt/coretests Tests/core

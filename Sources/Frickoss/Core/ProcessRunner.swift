@@ -37,7 +37,7 @@ enum Shell {
 /// Runs freaccmd for a conversion and hands its output over as it arrives, on the main queue.
 final class ProcessRunner {
     private let process = Process()
-    private let queue = DispatchQueue(label: "freac-edition.process-runner")
+    private let queue = DispatchQueue(label: "frickoss.process-runner")
 
     /// Raw output text, in order — always called on the main queue.
     var onOutput: ((String) -> Void)?

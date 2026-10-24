@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates freac (dustalexw edition)'s brand assets: the app icon, the README header and badges.
+"""Generates frickoss's brand assets: the app icon, the README header and badges.
 
     python3 scripts/make_brand.py [--version 1.0.0]
 
@@ -184,10 +184,10 @@ def header(path, version, W=2560, H=760):
     img.alpha_composite(tile, (110, 180))
     d = ImageDraw.Draw(img)
     x = 620
-    d.text((x, 196), "THE FREE AUDIO CONVERTER · DUSTALEXW EDITION", font=font("Inter-Bold.otf", 30), fill=SKY)
+    d.text((x, 196), "THE FREE AUDIO CONVERTER · A DUSTALEXW APP", font=font("Inter-Bold.otf", 30), fill=SKY)
     title = font("InterDisplay-Bold.otf", 150)
-    d.text((x - 6, 240), "fre", font=title, fill=CREAM)
-    d.text((x - 6 + d.textlength("fre", font=title), 240), "ac", font=title, fill=CORAL)
+    d.text((x - 6, 240), "frick", font=title, fill=CREAM)
+    d.text((x - 6 + d.textlength("frick", font=title), 240), "oss", font=title, fill=CORAL)
     d.text((x, 432), "Every format fre:ac speaks, in a native Mac window.", font=font("Inter-Medium.otf", 46), fill=CREAM)
     d.text((x, 496), "MP3, AAC, FLAC, Opus and more — plus CD ripping, cue sheets and SuperFast.", font=font("Inter-Regular.otf", 34), fill=SLATE)
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Builds "freac (dustalexw edition).app" into ./build and opens it.
+# Builds "frickoss.app" into ./build and opens it.
 # Double-click in Finder, or run ./build.command in Terminal.
 #   ./build.command            native architecture
 #   ./build.command universal  arm64 + x86_64 (needs full Xcode)
@@ -7,9 +7,9 @@
 # Set FREAC_NO_LAUNCH=1 to skip opening the app afterwards.
 cd "$(dirname "$0")" || exit 1
 
-APP_NAME="freac (dustalexw edition)"
-EXEC="FreacEdition"
-BUNDLE_ID="com.dustalexw.freac-edition"
+APP_NAME="frickoss"
+EXEC="Frickoss"
+BUNDLE_ID="com.dustalexw.frickoss"
 VERSION="$(tr -d ' \n' < VERSION)"
 LOG="build.log"
 exec > >(tee "$LOG") 2>&1

@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "FreacEdition",
+    name: "Frickoss",
     platforms: [.macOS(.v13)],
-    // The app ships as "freac (dustalexw edition).app"; the executable keeps a plain name.
-    products: [.executable(name: "FreacEdition", targets: ["FreacEdition"])],
+    // The app ships as "frickoss.app".
+    products: [.executable(name: "Frickoss", targets: ["Frickoss"])],
     targets: [
-        .executableTarget(name: "FreacEdition", path: "Sources/FreacEdition")
+        .executableTarget(name: "Frickoss", path: "Sources/Frickoss")
     ]
 )

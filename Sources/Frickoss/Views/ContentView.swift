@@ -203,7 +203,7 @@ struct MissingFreacBanner: View {
             Image(systemName: "exclamationmark.triangle.fill").foregroundStyle(Theme.amber)
             VStack(alignment: .leading, spacing: 2) {
                 Text("fre:ac isn't installed").font(.system(size: 12.5, weight: .semibold)).foregroundStyle(Theme.cream)
-                Text("This edition is a new window for fre:ac's own converter. Install fre:ac from freac.org, or point to it.")
+                Text("frickoss is a new window for fre:ac's own converter. Install fre:ac from freac.org, or point to it.")
                     .font(.system(size: 11.5)).foregroundStyle(Theme.slate)
             }
             Spacer()

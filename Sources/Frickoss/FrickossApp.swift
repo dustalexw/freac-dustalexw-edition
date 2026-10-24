@@ -2,7 +2,7 @@ import SwiftUI
 import AppKit
 
 enum AppInfo {
-    static let name = "freac (dustalexw edition)"
+    static let name = "frickoss"
     static var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
     }
@@ -20,7 +20,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 @main
-struct FreacEditionApp: App {
+struct FrickossApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var engine = FreacEngine()
     @StateObject private var store = SettingsStore()
@@ -28,7 +28,7 @@ struct FreacEditionApp: App {
     @Environment(\.openWindow) private var openWindow
 
     var body: some Scene {
-        WindowGroup("freac") {
+        WindowGroup("frickoss") {
             ContentView()
                 .environmentObject(engine)
                 .environmentObject(store)
@@ -43,7 +43,7 @@ struct FreacEditionApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {}
             CommandGroup(replacing: .appInfo) {
-                Button("About freac (dustalexw edition)") { openWindow(id: "about", value: "about") }
+                Button("About frickoss") { openWindow(id: "about", value: "about") }
             }
             CommandGroup(replacing: .help) {
                 Button("fre:ac Website") { NSWorkspace.shared.open(URL(string: "https://www.freac.org")!) }
@@ -52,7 +52,7 @@ struct FreacEditionApp: App {
         }
 
         // A value-based group never opens on launch (a plain `Window` scene would flash up at startup).
-        WindowGroup("About freac (dustalexw edition)", id: "about", for: String.self) { _ in
+        WindowGroup("About frickoss", id: "about", for: String.self) { _ in
             AboutView()
                 .environmentObject(engine)
                 .tint(Theme.accent)

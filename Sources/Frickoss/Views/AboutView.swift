@@ -35,7 +35,7 @@ struct AboutView: View {
             }
             .padding(.top, 16)
 
-            Text("fre:ac © Robert Kausch and contributors, GPL-2.0. This edition is a native front end: all conversion is done by fre:ac's own freaccmd, unchanged. Codecs are under their own licences.")
+            Text("fre:ac © Robert Kausch and contributors, GPL-2.0. frickoss is a native front end: all conversion is done by fre:ac's own freaccmd, unchanged. Codecs are under their own licences.")
                 .font(.system(size: 10.5))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Theme.dim)
@@ -56,10 +56,10 @@ struct AboutView: View {
                 .interpolation(.high)
                 .frame(width: 112, height: 112)
                 .shadow(color: Theme.coral.opacity(0.45), radius: 22, y: 6)
-            (Text("fre").foregroundColor(Theme.cream) + Text("ac").foregroundColor(Theme.coral))
+            (Text("frick").foregroundColor(Theme.cream) + Text("oss").foregroundColor(Theme.coral))
                 .font(.system(size: 34, weight: .heavy, design: .rounded))
             Capsule().fill(Theme.wave).frame(width: 96, height: 4)
-            Text("dustalexw edition")
+            Text("powered by fre:ac")
                 .font(.system(size: 11, weight: .bold)).tracking(1.2)
                 .foregroundStyle(Theme.sky)
             Text("Every format fre:ac speaks, in a native Mac window.")
@@ -126,7 +126,7 @@ struct SettingsView: View {
                 Button("Find Automatically") { engine.resetCustom() }.buttonStyle(PlateButtonStyle())
                 if engine.isLoading { ProgressView().controlSize(.small) }
             }
-            Hint("This edition finds fre:ac by itself (normally /Applications/freac.app). Choose a different copy here if you keep one elsewhere.")
+            Hint("frickoss finds fre:ac by itself (normally /Applications/freac.app). Choose a different copy here if you keep one elsewhere.")
         }
         .padding(22)
         .frame(width: 460)
