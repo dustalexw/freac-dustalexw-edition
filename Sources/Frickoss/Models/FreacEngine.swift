@@ -51,7 +51,10 @@ final class FreacEngine: ObservableObject {
         Task { await refresh() }
     }
 
-    func refresh() async {
+    /// Learns fre:ac's version and encoders. Uses the saved answer when fre:ac hasn't changed,
+    /// so a normal launch doesn't run freaccmd (and flash fre:ac icons in the Dock) at all.
+    /// `force` re-reads everything from freaccmd, e.g. from "Check Again".
+    func refresh(force: Bool = false) async {
         isLoading = true
         defer { isLoading = false }
         problem = nil
@@ -60,6 +63,13 @@ final class FreacEngine: ObservableObject {
             return
         }
         cmdPath = path
+        let fingerprint = EngineCache.Fingerprint.of(executable: path)
+        if !force, let fingerprint,
+           let cached = EngineCache.load(from: EngineCache.defaultURL, matching: fingerprint) {
+            version = cached.version
+            encoders = cached.encoders
+            return
+        }
         do {
             let help = try await Shell.run(path, [])
             version = FreacHelp.version(fromHelp: help.output)
@@ -82,6 +92,11 @@ final class FreacEngine: ObservableObject {
             }
             let order = Dictionary(uniqueKeysWithValues: ids.enumerated().map { ($1, $0) })
             encoders = loaded.sorted { (order[$0.id] ?? 0) < (order[$1.id] ?? 0) }
+            // Only save a complete answer: if any encoder failed to answer, ask again next launch.
+            if let fingerprint, encoders.count == ids.count {
+                EngineCache(format: EngineCache.currentFormat, fingerprint: fingerprint,
+                            version: version, encoders: encoders).save(to: EngineCache.defaultURL)
+            }
         } catch {
             problem = "Couldn't start fre:ac's converter: \(error.localizedDescription)"
             encoders = []

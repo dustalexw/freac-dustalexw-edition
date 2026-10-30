@@ -73,5 +73,29 @@ var pp2 = ProgressParser()
 let e2 = pp2.feed("Processing file: Audio CD 0 - Track 3...aborted.\n")
 check(pp2.aborted && e2.count == 2, "aborted \(e2)")
 
+// Saved engine answer: reused only for the same freaccmd
+let tmp = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("frickoss-cache-\(getpid())")
+let fakeApp = tmp.appendingPathComponent("freac.app/Contents")
+try! FileManager.default.createDirectory(at: fakeApp.appendingPathComponent("MacOS"), withIntermediateDirectories: true)
+let fakeCmd = fakeApp.appendingPathComponent("MacOS/freaccmd").path
+try! "v1".write(toFile: fakeCmd, atomically: true, encoding: .utf8)
+try! "<plist/>".write(to: fakeApp.appendingPathComponent("Info.plist"), atomically: true, encoding: .utf8)
+let cacheURL = tmp.appendingPathComponent("support/engine.json")
+let fp = EngineCache.Fingerprint.of(executable: fakeCmd)
+check(fp != nil && fp?.size == 2 && fp?.bundleInfoModified != nil, "fingerprint \(String(describing: fp))")
+if let fp {
+    EngineCache(format: EngineCache.currentFormat, fingerprint: fp, version: "1.1.7", encoders: [lame]).save(to: cacheURL)
+    let back = EngineCache.load(from: cacheURL, matching: fp)
+    check(back?.version == "1.1.7" && back?.encoders == [lame], "cache round trip")
+    try! "v1.1.8".write(toFile: fakeCmd, atomically: true, encoding: .utf8)   // fre:ac updated
+    let fp2 = EngineCache.Fingerprint.of(executable: fakeCmd)!
+    check(fp2 != fp && EngineCache.load(from: cacheURL, matching: fp2) == nil, "stale cache ignored")
+    EngineCache(format: EngineCache.currentFormat, fingerprint: fp2, version: "1.1.8", encoders: []).save(to: cacheURL)
+    check(EngineCache.load(from: cacheURL, matching: fp2) == nil, "empty answer not reused")
+    EngineCache(format: EngineCache.currentFormat - 1, fingerprint: fp2, version: "1.1.8", encoders: [lame]).save(to: cacheURL)
+    check(EngineCache.load(from: cacheURL, matching: fp2) == nil, "old format not reused")
+}
+try? FileManager.default.removeItem(at: tmp)
+
 print(failures == 0 ? "ALL PASSED" : "\(failures) FAILED")
 exit(failures == 0 ? 0 : 1)

@@ -211,7 +211,7 @@ struct MissingFreacBanner: View {
                 .buttonStyle(PlateButtonStyle())
             Button("Locate…") { locate() }
                 .buttonStyle(PlateButtonStyle())
-            Button("Check Again") { Task { await engine.refresh() } }
+            Button("Check Again") { Task { await engine.refresh(force: true) } }
                 .buttonStyle(PlateButtonStyle())
         }
         .padding(12)
