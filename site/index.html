@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>frickoss</title>
+<meta name="description" content="Every format fre:ac speaks, in a native Mac window. A free macOS front end for the fre:ac audio converter and CD ripper.">
+<meta property="og:title" content="frickoss">
+<meta property="og:description" content="Every format fre:ac speaks, in a native Mac window.">
+<meta property="og:image" content="https://raw.githubusercontent.com/dustalexw/frickoss/main/docs/readme-header.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon.webp" type="image/webp">
+<link rel="apple-touch-icon" href="icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one long dark page in the app's own colors (ink, coral "recording light", sky waveform).
+   Hero with icon, two-tone wordmark and download button; live-command strip; feature grid;
+   install steps; release notes read from GitHub. */
+:root{
+  --ink-0:#0b0d12; --ink-1:#20242e;
+  --panel:rgba(255,255,255,.045); --edge:rgba(255,255,255,.11);
+  --cream:#f5f1ea; --slate:#96a0b0;
+  --coral:#ff5a4e; --coral-deep:#d63a40; --sky:#5cc8ff;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--ink-0)}
+body{margin:0;color:var(--cream);font:16px/1.6 var(--body);min-height:100vh;overflow-x:hidden;
+  background:radial-gradient(1100px 650px at 8% -10%,rgba(255,90,78,.20) 0%,transparent 60%),
+             radial-gradient(1000px 700px at 100% 15%,rgba(92,200,255,.16) 0%,transparent 55%),
+             linear-gradient(180deg,var(--ink-1) 0%,var(--ink-0) 720px)}
+#wave{position:fixed;right:-40px;top:60px;width:min(560px,60vw);height:420px;z-index:0;pointer-events:none;opacity:.55}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;
+  padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+a{color:var(--sky)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:12px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:20px 0}
+.top .mini{display:flex;align-items:center;gap:10px;font:800 16px var(--body);color:var(--cream);text-decoration:none;letter-spacing:-.01em}
+.top .mini img{width:30px;height:30px;border-radius:8px}
+.top nav{display:flex;gap:18px;flex-wrap:wrap}
+.top nav a{color:var(--slate);text-decoration:none;font-weight:600;font-size:14px}
+.top nav a:hover{color:var(--cream)}
+
+.hero{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;padding-block:72px 40px}
+.hero .icon{width:220px;height:220px;border-radius:50px;filter:drop-shadow(0 22px 60px rgba(255,90,78,.28));animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+.eyebrow{font:700 13px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--sky);margin:0 0 6px}
+h1{font:900 clamp(56px,10vw,112px)/.95 var(--body);margin:0;letter-spacing:-.045em;color:var(--cream)}
+h1 .oss{color:var(--coral)}
+.tag{font-size:clamp(19px,2.3vw,24px);font-weight:600;margin:18px 0 6px;max-width:34ch;text-wrap:balance}
+.sub{color:var(--slate);margin:0 0 22px;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 28px;padding:0;list-style:none}
+.chips li{font-size:13px;font-weight:600;color:var(--cream);border:1px solid var(--edge);background:rgba(0,0,0,.25);border-radius:999px;padding:5px 12px 5px 10px;display:flex;align-items:center;gap:7px}
+.chips li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,var(--cream))}
+.dl{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px}
+.btn{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#fff;font:800 18px var(--body);
+  padding:16px 26px;border-radius:16px;background:linear-gradient(180deg,var(--coral),var(--coral-deep));
+  box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 14px 40px rgba(255,90,78,.35);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 18px 50px rgba(255,90,78,.5)}
+.btn svg{width:22px;height:22px;flex:none}
+.btn small{display:block;font:600 12px var(--body);opacity:.88;margin-top:1px}
+.alt{font-size:14px;color:var(--slate);font-weight:600}
+.alt a{color:var(--cream);font-weight:700;text-decoration:none;border-bottom:1px solid var(--edge)}
+.alt a:hover{border-color:var(--sky)}
+.ver{font-size:13px;color:var(--slate);font-weight:600;margin-top:14px}
+.ver b{color:var(--cream)}
+.note{display:none;margin-top:14px;font-size:14px;font-weight:600;background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:10px 14px;max-width:48ch}
+
+.cmd{margin:10px 0 0;border-radius:18px;padding:1.5px;background:linear-gradient(95deg,rgba(255,90,78,.7),rgba(150,160,176,.35),rgba(92,200,255,.7))}
+.cmd-in{border-radius:16px;background:rgba(11,13,18,.92);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.cmd-label{font:700 11px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--slate);padding-top:3px;white-space:nowrap}
+.cmd code{font:500 14px/1.6 var(--mono);color:#e3e7ee;overflow-x:auto;white-space:nowrap;display:block;min-width:0;flex:1;scrollbar-width:thin}
+.cmd code .f{color:var(--sky)}.cmd code .v{color:#ffb3ad}
+.cmd-note{font-size:14px;color:var(--slate);margin:10px 4px 70px}
+
+section{padding-block:10px 70px}
+h2{font:800 clamp(26px,3.6vw,38px)/1.1 var(--body);margin:0 0 10px;letter-spacing:-.025em;text-wrap:balance}
+.lead{color:var(--slate);margin:0 0 28px;max-width:62ch;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:22px 22px 20px;min-width:0}
+.card h3{font:700 17px/1.3 var(--body);margin:0 0 8px;display:flex;align-items:center;gap:10px}
+.card h3 .bar{width:4px;height:18px;border-radius:2px;flex:none;background:linear-gradient(180deg,var(--coral),var(--sky))}
+.card p{margin:0;color:var(--slate);font-size:15px}
+code.i{font:500 13px var(--mono);color:#e3e7ee;background:rgba(255,255,255,.07);border-radius:6px;padding:1px 6px}
+.wide{grid-column:span 2}
+
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.step{background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.step h3{font:800 20px var(--body);margin:0;letter-spacing:-.01em}
+.step ol{margin:0;padding-left:20px;color:var(--slate);font-size:15px}
+.step ol li{margin:5px 0}
+.step ol b{color:var(--cream)}
+.step .get{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;color:var(--cream);font-weight:700;
+  border:1px solid var(--edge);border-radius:12px;padding:11px 14px;background:rgba(255,255,255,.03)}
+.step .get:hover{border-color:var(--coral);background:rgba(255,90,78,.1)}
+.step .get span{font-weight:600;font-size:13px;color:var(--slate)}
+pre.term{margin:0;font:500 13px/1.7 var(--mono);color:#e3e7ee;background:rgba(0,0,0,.35);border:1px solid var(--edge);border-radius:12px;padding:12px 14px;overflow-x:auto}
+pre.term .c{color:var(--slate)}
+
+.notes{background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:24px 26px}
+.notes h3{font:800 20px var(--body);margin:0 0 6px}
+.notes .when{color:var(--slate);font-size:14px;margin:0 0 14px}
+.notes .body h4{font:700 16px var(--body);margin:18px 0 6px}
+.notes .body ul{margin:0;padding-left:20px;color:var(--slate)}
+.notes .body li{margin:5px 0}
+.notes .body strong{color:var(--cream)}
+.notes .body code{font:500 13px var(--mono);color:#e3e7ee;background:rgba(255,255,255,.07);border-radius:6px;padding:1px 6px}
+.notes .more{display:inline-block;margin-top:16px;font-weight:700;text-decoration:none}
+
+footer{position:relative;z-index:1;border-top:1px solid var(--edge);color:var(--slate);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-block:24px max(28px,env(safe-area-inset-bottom,0px))}
+footer a{color:var(--cream);text-decoration:none;font-weight:700}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;justify-items:start;gap:26px;padding-block:44px 30px}
+  .hero .icon{width:150px;height:150px;border-radius:34px}
+  .grid,.steps{grid-template-columns:1fr}
+  .wide{grid-column:auto}
+  .top nav{display:none}
+  .cmd-in{flex-direction:column;gap:8px;align-items:stretch}
+  #wave{opacity:.25}
+}
+@media (prefers-reduced-motion:reduce){.hero .icon{animation:none}.btn{transition:none}}
+</style>
+</head>
+<body>
+<canvas id="wave" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header class="top">
+    <a class="mini" href="#"><img src="icon.webp" alt="">frickoss</a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#new">What's new</a>
+      <a href="https://github.com/dustalexw/frickoss">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <img class="icon" src="icon.webp" alt="The frickoss app icon: a silver CD turning into a coral-to-blue sound wave">
+      <div>
+        <p class="eyebrow">The free audio converter · a dustalexw app</p>
+        <h1>frick<span class="oss">oss</span></h1>
+        <p class="tag">Every format fre:ac speaks, in a native Mac window.</p>
+        <p class="sub">MP3, AAC, FLAC, Opus and more, plus CD ripping, cue sheets and SuperFast.</p>
+        <ul class="chips" aria-label="Highlights">
+          <li style="--c:var(--coral)">Powered by fre:ac</li><li>Audio CD ripping</li><li style="--c:var(--sky)">Live command preview</li><li>Only on macOS</li>
+        </ul>
+        <div class="dl">
+          <a class="btn" id="mainBtn" href="#download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m6 10 6 6 6-6"/><path d="M4 20h16"/></svg>
+            <span><span id="mainLabel">Get frickoss</span><small id="mainSub">Free · macOS 13 or later</small></span>
+          </a>
+          <p class="alt">Needs <a href="https://www.freac.org/downloads-mainmenu-33">fre:ac</a> (free)</p>
+        </div>
+        <p class="ver" id="ver">Version <b>1.0.0</b></p>
+        <p class="note" id="phoneNote">frickoss is a Mac app. Open this page on your Mac to download it.</p>
+      </div>
+    </div>
+
+    <div class="cmd" role="group" aria-label="Example of the live command preview">
+      <div class="cmd-in">
+        <span class="cmd-label">Live command</span>
+        <code id="cmd"></code>
+      </div>
+    </div>
+    <p class="cmd-note">Pick a format and its options with native controls, and the exact fre:ac command updates at the bottom of the window, ready to copy into Terminal.</p>
+
+    <section id="features">
+      <h2>All of fre:ac, none of the guesswork</h2>
+      <p class="lead">frickoss asks fre:ac which encoders it has and what each one accepts, then builds real Mac controls for them. Here's what's inside.</p>
+      <div class="grid">
+        <article class="card"><h3><span class="bar"></span>Every format, nothing hard-coded</h3><p>MP3, AAC, FLAC, Opus, Vorbis, WavPack, Monkey's Audio and every other encoder fre:ac ships with. New fre:ac versions and codecs show up on their own.</p></article>
+        <article class="card"><h3><span class="bar"></span>Audio CD ripping</h3><p>CDDB track names, pick the tracks you want, and eject the disc when it's done.</p></article>
+        <article class="card"><h3><span class="bar"></span>Only real changes</h3><p>Options left at fre:ac's defaults stay off the command line, so what runs is exactly what you chose.</p></article>
+        <article class="card"><h3><span class="bar"></span>fre:ac's extras</h3><p>One combined file with chapters, cue sheets, playlists, cover art, and SuperFast multi-core conversion.</p></article>
+        <article class="card"><h3><span class="bar"></span>Name files your way</h3><p>fre:ac's patterns, like <code class="i">&lt;artist&gt;/&lt;album&gt;/&lt;track&gt; - &lt;title&gt;</code>, with presets and one-click tokens.</p></article>
+        <article class="card"><h3><span class="bar"></span>Nothing hidden</h3><p>The live command at the bottom of the window can be copied straight into Terminal.</p></article>
+        <article class="card" style="grid-column:1/-1"><h3><span class="bar"></span>Native, and quick to open</h3><p>A SwiftUI app for macOS 13 and later. frickoss remembers what your copy of fre:ac can do, so it opens straight away and only checks again when fre:ac is updated.</p></article>
+      </div>
+    </section>
+
+    <section id="download">
+      <h2>Download</h2>
+      <p class="lead">frickoss is a front end: the converting is done by fre:ac itself, so you need both. They're both free.</p>
+      <div class="steps">
+        <article class="step">
+          <h3>1 · Get fre:ac</h3>
+          <ol>
+            <li>Download fre:ac for macOS from <b>freac.org</b>.</li>
+            <li>Move <b>freac.app</b> to Applications. frickoss finds it there automatically.</li>
+            <li>Elsewhere, or installed with Homebrew? Choose it in frickoss's <b>Settings</b>.</li>
+          </ol>
+          <a class="get" href="https://www.freac.org/downloads-mainmenu-33">Download fre:ac <span>freac.org</span></a>
+        </article>
+        <article class="step">
+          <h3>2 · Get frickoss</h3>
+          <ol id="appSteps">
+            <li>Unzip and move <b>frickoss.app</b> to Applications.</li>
+            <li>First launch: right-click the app and choose <b>Open</b> (or <b>System Settings → Privacy &amp; Security → Open Anyway</b>).</li>
+            <li>macOS 13 or later, Apple silicon.</li>
+          </ol>
+          <a class="get" id="appGet" href="https://github.com/dustalexw/frickoss/releases/latest">Download frickoss <span id="appGetSub">.zip</span></a>
+        </article>
+        <article class="step" style="grid-column:1/-1">
+          <h3>Or build it yourself</h3>
+          <p style="margin:0;color:var(--slate);font-size:15px">On an Intel Mac, or if you'd rather compile it: you need Swift 5.9 or later (Xcode, or <code class="i">xcode-select --install</code>).</p>
+<pre class="term">git clone https://github.com/dustalexw/frickoss
+cd frickoss
+./build.command            <span class="c"># builds and opens build/frickoss.app</span>
+./build.command install    <span class="c"># also copies it to /Applications</span></pre>
+        </article>
+      </div>
+    </section>
+
+    <section id="new">
+      <h2>What's new</h2>
+      <div class="notes">
+        <h3 id="relName">frickoss 1.0.0</h3>
+        <p class="when" id="relWhen">macOS</p>
+        <div class="body" id="relBody">
+          <h4>First release</h4>
+          <ul>
+            <li>Every fre:ac encoder with its own options, read from your copy of fre:ac.</li>
+            <li>Audio CD ripping, cue sheets, playlists, chapters and SuperFast conversion.</li>
+            <li>A live, copyable fre:ac command at the bottom of the window.</li>
+          </ul>
+          <h4>Since then</h4>
+          <ul>
+            <li><strong>Faster launch:</strong> frickoss remembers fre:ac's encoders, so fre:ac icons no longer flash in the Dock every time it opens.</li>
+          </ul>
+        </div>
+        <a class="more" id="relLink" href="https://github.com/dustalexw/frickoss">frickoss on GitHub →</a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>frickoss is an independent front end, not affiliated with the fre:ac project. fre:ac is © Robert Kausch and contributors, GPL-2.0.</span>
+    <a href="https://github.com/dustalexw/frickoss">Source on GitHub</a>
+  </div>
+</footer>
+
+<script>
+// ---- a slow waveform behind the hero, in the icon's coral-to-blue ----
+(()=>{const c=document.getElementById('wave'),x=c.getContext('2d');let w,h;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches,N=22;
+  const seed=Array.from({length:N},(_,i)=>({a:.35+.65*Math.abs(Math.sin(i*1.7)),p:i*.9,s:.4+((i*37)%10)/12}));
+  function size(){const d=Math.min(devicePixelRatio||1,2);w=c.clientWidth;h=c.clientHeight;c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0);draw(0);}
+  function draw(t){x.clearRect(0,0,w,h);const gap=w/N,bw=Math.max(4,gap*.42);
+    seed.forEach((b,i)=>{const k=i/(N-1),amp=b.a*(.75+.25*Math.sin(b.p+t/1000*b.s));const bh=h*.9*amp;
+      const r=Math.round(255+(92-255)*k),g=Math.round(90+(200-90)*k),bl=Math.round(78+(255-78)*k);
+      x.globalAlpha=.18+.5*k;x.fillStyle=`rgb(${r},${g},${bl})`;const xx=i*gap+(gap-bw)/2;
+      x.beginPath();x.roundRect?x.roundRect(xx,(h-bh)/2,bw,bh,bw/2):x.rect(xx,(h-bh)/2,bw,bh);x.fill();});
+    if(!still)requestAnimationFrame(draw);}
+  addEventListener('resize',size);size();})();
+
+// ---- the live command example, the way the app builds it ----
+(()=>{const parts=[['freaccmd',''],[' -e ','f'],['lame','v'],[' -d ','f'],['/Users/you/Music/Converted','v'],[' -p ','f'],["'<artist>/<album>/<track> - <title>'",'v'],[' --cuesheet --superfast','f'],[' -- ',''],['-b ','f'],['256','v'],[" '01 Opening.flac'",'']];
+  document.getElementById('cmd').innerHTML=parts.map(([t,k])=>{t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;');return k?`<span class="${k}">${t}</span>`:t;}).join('');})();
+
+// ---- phones and tablets: frickoss is a Mac app ----
+const ua=navigator.userAgent,plat=(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||'';
+const phone=/iPhone|iPad|iPod|Android/i.test(ua)||(/Mac/.test(plat)&&navigator.maxTouchPoints>1);
+if(phone)document.getElementById('phoneNote').style.display='block';
+
+// ---- download links: use the latest GitHub release when there is one, otherwise point to building it ----
+const btn=document.getElementById('mainBtn'),get=document.getElementById('appGet');
+function noRelease(){
+  btn.href='#download';document.getElementById('mainLabel').textContent='Get frickoss';
+  document.getElementById('mainSub').textContent='Free · build it on your Mac';
+  get.href='https://github.com/dustalexw/frickoss';get.firstChild.textContent='Get the source on GitHub ';
+  document.getElementById('appGetSub').textContent='then run build.command';
+  document.getElementById('appSteps').innerHTML='<li>A ready-made download is on its way. For now, build it below: it takes about a minute.</li><li>macOS 13 or later, Apple silicon or Intel.</li>';
+}
+function md(src){const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const inl=s=>esc(s).replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g,'<a href="$2">$1</a>');
+  let out='',inList=false;
+  for(const raw of src.replace(/\r/g,'').split('\n')){const l=raw.trim();
+    if(/^#{1,6}\s/.test(l)){if(inList){out+='</ul>';inList=false;}const t=l.replace(/^#{1,6}\s+/,'');if(/^(downloads?|install)/i.test(t))break;out+='<h4>'+inl(t)+'</h4>';}
+    else if(/^\d+\.\s+|^[-*]\s+/.test(l)){if(!inList){out+='<ul>';inList=true;}out+='<li>'+inl(l.replace(/^(\d+\.|[-*])\s+/,''))+'</li>';}
+    else if(l){if(inList){out+='</ul>';inList=false;}out+='<p style="color:var(--slate);margin:6px 0">'+inl(l)+'</p>';}}
+  if(inList)out+='</ul>';return out;}
+fetch('https://api.github.com/repos/dustalexw/frickoss/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
+  .then(r=>r.ok?r.json():Promise.reject(r.status)).then(rel=>{
+    const a=(rel.assets||[]).find(a=>/macOS.*\.zip$/i.test(a.name));
+    if(!a){noRelease();return;}
+    const v=(rel.tag_name||'').replace(/^v/,'')||'1.0.0';
+    btn.href=a.browser_download_url;get.href=a.browser_download_url;
+    document.getElementById('mainLabel').textContent='Download for Mac';
+    document.getElementById('mainSub').textContent='Free · version '+v;
+    document.getElementById('ver').innerHTML='Latest release: <b>frickoss '+v+'</b>';
+    document.getElementById('relName').textContent=rel.name||('frickoss '+v);
+    if(rel.published_at)document.getElementById('relWhen').textContent='Released '+new Date(rel.published_at).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'})+' · macOS';
+    if(rel.body){const h=md(rel.body);if(h.trim())document.getElementById('relBody').innerHTML=h;}
+    if(rel.html_url)document.getElementById('relLink').href=rel.html_url;
+  }).catch(()=>noRelease());
+</script>
+</body>
+</html>
