@@ -1,31 +1,30 @@
 name: Build
 
-# Builds frickoss.app on a real Mac for every push to main (or on demand),
-# runs the core checks, and keeps the zipped app as a downloadable artifact.
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 jobs:
-  build:
+  mac:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: Core checks
+      - name: Core tests
         run: ./Tests/core/run.sh
-      - name: Build universal app (Apple silicon + Intel)
+      - name: Build frickoss.app (Apple silicon + Intel)
         env:
           FREAC_NO_LAUNCH: "1"
         run: ./build.command universal
-      - name: Zip
+      - name: Zip the app
         run: |
           V="$(tr -d ' \n' < VERSION)"
           ditto -c -k --sequesterRsrc --keepParent build/frickoss.app "frickoss-$V-macOS-universal.zip"
-          lipo -archs build/frickoss.app/Contents/MacOS/Frickoss
-          ls -l *.zip
+          lipo -info build/frickoss.app/Contents/MacOS/Frickoss
+          codesign --verify --deep --strict build/frickoss.app
       - uses: actions/upload-artifact@v4
         with:
           name: frickoss-macOS
           path: frickoss-*-macOS-universal.zip
-          retention-days: 30
+          if-no-files-found: error
